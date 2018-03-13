@@ -16,15 +16,20 @@ io.on('connection', (socket) => {
     console.log('New user connected');
 
     // Sending a 'newMessage' message to the user
-    socket.emit('newMessage', {
-        from: 'sidney@gmail.com',
-        text: 'Hey this is Sidney. What is going on?',
-        createdAt: 1234
-    })
+    // socket.emit('newMessage', {
+    //     from: 'sidney@gmail.com',
+    //     text: 'Hey this is Sidney. What is going on?',
+    //     createdAt: 1234
+    // })
 
-    //Processing new message received from the client app
+    //Processing new message received from the client app and sending back to all clients
     socket.on('createMessage', (newMessage) => {
         console.log('createMessage', newMessage);
+        io.emit('createMessage', {
+            from: newMessage.from,
+            text: newMessage.text,
+            createdAt: new Date().getTime()
+        });
     });
 
     socket.on('disconnect', () => {
