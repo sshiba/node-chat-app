@@ -23,11 +23,22 @@ io.on('connection', (socket) => {
     // })
 
     //Processing new message received from the client app and sending back to all clients
-    socket.on('createMessage', (newMessage) => {
-        console.log('createMessage', newMessage);
-        io.emit('createMessage', {
-            from: newMessage.from,
-            text: newMessage.text,
+    socket.on('createMessage', (message) => {
+        console.log('createMessage', message);
+        // io.emit('createMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // });
+        socket.emit('newMessage', {
+            from: 'Admin',
+            text: 'Welcome to the group!',
+            createdAt: new Date().getTime()
+        });
+
+        socket.broadcast.emit('newMessage', {
+            from: 'Admin',
+            text: 'New user joined',
             createdAt: new Date().getTime()
         });
     });
